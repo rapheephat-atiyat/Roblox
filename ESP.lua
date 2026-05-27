@@ -1,3 +1,17 @@
+local URL = "https://raw.githubusercontent.com/rapheephat-atiyat/Roblox/refs/heads/main/ESP.lua"
+
+pcall(function()
+    local queued = ('loadstring(game:HttpGet("%s"))()'):format(URL)
+
+    if queue_on_teleport then
+        queue_on_teleport(queued)
+    elseif syn and syn.queue_on_teleport then
+        syn.queue_on_teleport(queued)
+    elseif fluxus and fluxus.queue_on_teleport then
+        fluxus.queue_on_teleport(queued)
+    end
+end)
+
 if getgenv().EnemyESPLoaded then
     return
 end
@@ -64,12 +78,7 @@ local function UpdateESP(player)
 
     local humanoid = character:FindFirstChildWhichIsA("Humanoid")
 
-    if not humanoid then
-        RemoveESP(player)
-        return
-    end
-
-    if humanoid.Health <= 0 then
+    if not humanoid or humanoid.Health <= 0 then
         RemoveESP(player)
         return
     end
